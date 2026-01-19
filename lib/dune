@@ -1,3 +1,4 @@
 (library
  (public_name aws_lambda_runtime)
- (name aws_lambda_runtime))
+ (name aws_lambda_runtime)
+ (libraries ezcurl base))
