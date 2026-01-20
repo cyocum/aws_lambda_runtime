@@ -34,7 +34,7 @@ struct
   let report_invocation_outcome rt handler_output request_id =
     let url =
       if Handler.is_success handler_output then
-        rt.handler_result_endpoint ^ request_id ^ "/reponse"
+        rt.handler_result_endpoint ^ request_id ^ "/response"
       else rt.handler_error_endpoint ^ request_id ^ "/error"
     in
     let payload = Handler.string_of_output handler_output in
