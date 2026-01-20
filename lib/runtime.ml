@@ -1,4 +1,7 @@
-module Make(Handler : Handler.S) =
+module Make(Handler : Handler.S)
+: sig
+  val invoke_handler : unit -> unit
+end =
 struct
   type t = {
     user_agent_header : string;
@@ -59,4 +62,4 @@ struct
     let handler_input = Handler.input_of_string next_invocation.Ezcurl.body in
     let handler_output = Handler.handle_request context handler_input in
     ignore(report_invocation_outcome rt handler_output context.Context.request_id)
-end
+end 
