@@ -7,12 +7,6 @@ struct
     handler_result_endpoint : string;
   }
 
-  type invocation_response = {
-    payload : string;
-    content_type : string;
-    success : bool;
-  }
-
   exception AWSLambdaRuntimeApiMissing
 
   let build_lambda_runtime () =
@@ -48,7 +42,7 @@ struct
       [
         ("content-type:", Handler.context_type);
         ( "content-length:",
-          string_of_int (String.length payload) );
+          string_of_int (Base.String.length payload) );
         ("User-Agent:", rt.user_agent_header);
       ]
     in
