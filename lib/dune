@@ -1,4 +1,5 @@
 (library
  (public_name aws_lambda_runtime)
  (name aws_lambda_runtime)
+ (modules_without_implementation handler)
  (libraries ezcurl base))
