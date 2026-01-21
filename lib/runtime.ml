@@ -1,4 +1,9 @@
-module Make(Handler : Handler.S) =
+module type S =
+sig
+  val invoke_handler : unit -> unit
+end
+
+module Make(Handler : Handler.S) : S =
 struct
   type t = {
     user_agent_header : string;
