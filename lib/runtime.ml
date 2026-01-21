@@ -2,7 +2,7 @@ module type RUNTIME = sig
   val invoke_handler : unit -> unit
 end
 
-module Make(Handler : Handler.S) : RUNTIME =
+module Make(Handler : Handler.S) () : RUNTIME =
 struct
   type t = {
     user_agent_header : string;
