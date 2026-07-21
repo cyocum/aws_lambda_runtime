@@ -1,8 +1,8 @@
 type t = {
   request_id : string;
   xray_trace_id : string;
-  client_context : string;
-  cognito_identity : string;
+  client_context : string option;
+  cognito_identity : string option;
   function_arn : string;
   deadline : int64;
 }
@@ -20,13 +20,13 @@ let create_context context_payload =
         Base.Hashtbl.find_exn headers_hash "lambda-runtime-aws-request-id";
       xray_trace_id = Base.Hashtbl.find_exn headers_hash "lambda-runtime-trace-id";
       client_context =
-        Base.Hashtbl.find_exn headers_hash "lambda-runtime-client-context";
+        Base.Hashtbl.find headers_hash "lambda-runtime-client-context";
       cognito_identity =
-        Base.Hashtbl.find_exn headers_hash "lambda-runtime-cognito-identity";
+        Base.Hashtbl.find headers_hash "lambda-runtime-cognito-identity";
       function_arn =
         Base.Hashtbl.find_exn headers_hash "lambda-runtime-invoked-function-arn";
       deadline =
         Base.Int64.of_string
           (Base.Hashtbl.find_exn headers_hash
-             "lambda-runtime-invoked-function-arn");
+             "lambda-runtime-invoked-deadline-ms");
     }
