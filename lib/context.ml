@@ -8,10 +8,14 @@ type t = {
 }
 
 let create_context context_payload =
-      let headers_hash =
+  let headers_hash =
+    let normalised_headers =
+      Base.List.map context_payload.Ezcurl_core.headers ~f:(fun (k, v) ->
+          (Base.String.lowercase k, v))
+    in
       match Base.Hashtbl.of_alist
               (module Base.String)
-              context_payload.Ezcurl_core.headers with
+              normalised_headers with
       | `Ok h -> h
       | `Duplicate_key s ->
         failwith (Base.Printf.sprintf "Duplicate key in header: %s" s) in
@@ -28,5 +32,5 @@ let create_context context_payload =
       deadline =
         Base.Int64.of_string
           (Base.Hashtbl.find_exn headers_hash
-             "lambda-runtime-invoked-deadline-ms");
+             "lambda-runtime-deadline-ms");
     }
