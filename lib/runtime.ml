@@ -70,20 +70,20 @@ struct
     | Ok _ -> true
     | Error _ -> false
 
+  let get_request_id headers =
+    match Base.List.Assoc.find
+            headers
+            "lambda-runtime-aws-request-id"
+            ~equal:Base.String.Caseless.equal with
+    | Some id -> id
+    | None -> "unknown-request-id"
 
   let invoke_handler () =
     let rt = build_lambda_runtime () in
     while true do 
       let next_invocation = request_next_invocation rt in
-      let req_id =
-        match Base.List.Assoc.find
-                next_invocation.Ezcurl.headers
-                "lambda-runtime-aws-request-id"
-                ~equal:Base.String.Caseless.equal  with
-        | Some id -> id
-        | None -> "unknown-request-id"
+      let req_id = get_request_id next_invocation.Ezcurl.headers
       in
-
       let outcome =
         try 
           let context = Context.create_context next_invocation in
@@ -94,6 +94,6 @@ struct
         | exn ->
           Error (Base.Exn.to_string exn)
       in
-          ignore(report_invocation_outcome rt outcome req_id)
+      ignore(report_invocation_outcome rt outcome req_id)
     done
 end 
